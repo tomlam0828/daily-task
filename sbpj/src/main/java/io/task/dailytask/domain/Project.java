@@ -18,7 +18,7 @@ public class Project {
     private String projectName;
 
     @NotBlank(message = "Project identifier is required")
-    @Size(min = 4, max = 5, message = "Please use 4-5 characters")
+    @Size(min = 1, max = 99999, message = "Please no more than 99999 characters")
     @Column(updatable = false, unique = true)
     private String projectIdentifier;
 
@@ -32,6 +32,7 @@ public class Project {
     private Date end_date;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
+    @Column(updatable = false)
     private Date created_At;
 
     @JsonFormat(pattern = "yyyy-mm-dd")
