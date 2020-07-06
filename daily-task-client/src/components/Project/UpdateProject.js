@@ -1,13 +1,23 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { getProject } from "../../actions/projectActions";
+import PropType from "prop-types";
+import { connect } from "react-redux";
+import classnames from "classnames";
 
 class UpdateProject extends Component {
+
+    componentDidMount() {
+        const { id } = this.props.match.params;
+        this.props.getProject(id, this.props.history);
+    }
+
     render() {
         return (
             <div className="project">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-8 m-auto">
-                            <h5 className="display-4 text-center">Edit Project form</h5>
+                            <h5 className="display-4 text-center">Update Project form</h5>
                             <hr />
                             <form>
                                 <div className="form-group">
@@ -39,4 +49,13 @@ class UpdateProject extends Component {
     }
 }
 
-export default UpdateProject;
+UpdateProject.propType = {
+    getProject: PropType.func.isRequired,
+    project: PropType.object.isRequired
+}
+
+const mapStateToProps = state => ({
+    project: state.project.project
+})
+
+export default connect(mapStateToProps, { getProject })(UpdateProject);
