@@ -1,7 +1,9 @@
 package io.task.dailytask.services;
 
+import io.task.dailytask.domain.Backlog;
 import io.task.dailytask.domain.Project;
 import io.task.dailytask.exceptions.ProjectIdException;
+import io.task.dailytask.repositories.BacklogRepository;
 import io.task.dailytask.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,9 +13,25 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    BacklogRepository backlogRepository;
+
     public Project saveOrUpdateProject(Project project) {
+        String projectId = project.getProjectIdentifier().toUpperCase();
         try {
-            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            project.setProjectIdentifier(projectId);
+
+            if (project.getId() == null) {
+                Backlog backlog = new Backlog();
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(projectId);
+            }
+
+            if (project.getId() != null) {
+                project.setBacklog(backlogRepository.findByProjectIdentifier(projectId));
+            }
+
             return projectRepository.save(project);
         } catch (Exception e) {
             throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
