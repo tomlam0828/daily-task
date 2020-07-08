@@ -87,7 +87,7 @@ class UpdateProject extends Component {
                                         })}
                                         placeholder="Project Name"
                                         name="projectName"
-                                        value={this.state.projectName}
+                                        value={this.state.projectName || ""}
                                         onChange={this.onChange}
                                     />
                                     {errors.projectName && (
@@ -100,7 +100,7 @@ class UpdateProject extends Component {
                                         className="form-control form-control-lg"
                                         placeholder="Unique Project ID"
                                         name="projectIdentifier"
-                                        value={this.state.projectIdentifier}
+                                        value={this.state.projectIdentifier || ""}
                                         onChange={this.onChange}
                                         disabled
                                     />
@@ -113,7 +113,7 @@ class UpdateProject extends Component {
                                         placeholder="Project Description"
                                         name="description"
                                         onChange={this.onChange}
-                                        value={this.state.description}
+                                        value={this.state.description || ""}
                                     />
                                     {errors.description && (
                                         <div className="invalid-feedback">{errors.description}</div>
@@ -125,7 +125,7 @@ class UpdateProject extends Component {
                                         type="date"
                                         className="form-control form-control-lg"
                                         name="start_date"
-                                        value={this.state.start_date}
+                                        value={this.state.start_date || ""}
                                         onChange={this.onChange}
                                     />
                                 </div>
@@ -135,7 +135,7 @@ class UpdateProject extends Component {
                                         type="date"
                                         className="form-control form-control-lg"
                                         name="end_date"
-                                        value={this.state.end_date}
+                                        value={this.state.end_date || ""}
                                         onChange={this.onChange}
                                     />
                                 </div>

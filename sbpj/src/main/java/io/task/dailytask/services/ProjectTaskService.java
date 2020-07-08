@@ -5,6 +5,7 @@ import io.task.dailytask.domain.ProjectTask;
 import io.task.dailytask.repositories.BacklogRepository;
 import io.task.dailytask.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,8 @@ public class ProjectTaskService {
         // update the bl sequence
         BacklogSequence++;
 
+        backlog.setPTSequence(BacklogSequence);
+
         // add sequence to project task
         projectTask.setProjectSequence(projectIdentifier + "-" + BacklogSequence);
         projectTask.setProjectIdentifier(projectIdentifier);
@@ -44,5 +47,9 @@ public class ProjectTaskService {
         }
 
         return projectTaskRepository.save(projectTask);
+    }
+
+    public Iterable<ProjectTask> findBacklogById(String id) {
+        return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 }
