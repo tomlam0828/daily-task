@@ -14,7 +14,7 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     @Autowired
-    BacklogRepository backlogRepository;
+    private BacklogRepository backlogRepository;
 
     public Project saveOrUpdateProject(Project project) {
         String projectId = project.getProjectIdentifier().toUpperCase();
@@ -34,7 +34,7 @@ public class ProjectService {
 
             return projectRepository.save(project);
         } catch (Exception e) {
-            throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase() + "' already exists");
+            throw new ProjectIdException("Project ID '" + projectId + "' already exists");
         }
     }
 

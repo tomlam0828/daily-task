@@ -40,7 +40,7 @@ public class ProjectTaskService {
             backlog.setPTSequence(BacklogSequence);
 
             // add sequence to project task
-            projectTask.setProjectSequence(projectIdentifier + "-" + BacklogSequence);
+            projectTask.setProjectSequence(backlog.getProjectIdentifier() + "-" + BacklogSequence);
             projectTask.setProjectIdentifier(projectIdentifier);
 
             // initial priority when priority null
@@ -48,7 +48,7 @@ public class ProjectTaskService {
                 projectTask.setPriority(3);
             }
             // initial status when status is null;
-            if (projectTask.getPriority() == null || projectTask.getStatus() == "") {
+            if (projectTask.getStatus() == null || projectTask.getStatus() == "") {
                 projectTask.setStatus("Todo");
             }
 
