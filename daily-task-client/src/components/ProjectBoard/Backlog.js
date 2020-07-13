@@ -16,7 +16,6 @@ class Backlog extends Component {
         let doneItems = [];
 
         for (var i = 0; i < tasks.length; i++) {
-            console.log(tasks[i].props.project_task.status);
             if (tasks[i].props.project_task.status === "TO_DO") {
                 todoItems.push(tasks[i]);
             }
