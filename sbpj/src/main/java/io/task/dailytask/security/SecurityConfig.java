@@ -30,7 +30,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sameOrigin()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js")
+                .antMatchers(
+                        "/",
+                        "favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js"
+                )
+                .permitAll()
+                .antMatchers( "/api/users/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
