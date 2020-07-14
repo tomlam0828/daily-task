@@ -1,5 +1,6 @@
 package io.task.dailytask.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,7 +19,7 @@ public class User implements UserDetails {
     @Email(message = "Username needs to be an email")
     @NotBlank(message = "Username is required")
     @Column(unique = true)
-    private String name;
+    private String username;
 
     @NotBlank(message = "please enter your full name")
     private String fullName;
@@ -48,20 +49,20 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getFullName() {
@@ -108,32 +109,32 @@ public class User implements UserDetails {
     UserDetail interface methods
      */
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
     }
 }

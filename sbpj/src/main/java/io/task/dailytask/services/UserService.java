@@ -1,6 +1,7 @@
 package io.task.dailytask.services;
 
 import io.task.dailytask.domain.User;
+import io.task.dailytask.exceptions.UsernameAlreadyExistsException;
 import io.task.dailytask.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,13 +17,22 @@ public class UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public User saveUser(User newUser) {
-        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-        //username has to be unique (need exception)
+        try {
+            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 
-        // make sure password and confirmpassword is the same
-        // we dont persist or show the confirmpassword
+            //username has to be unique (need exception)
+            newUser.setUsername(newUser.getUsername());
 
-        return userRepository.save(newUser);
+            // make sure password and confirmpassword is the same
+
+
+            // we dont persist or show the confirmpassword
+            newUser.setConfirmPassword("");
+
+            return userRepository.save(newUser);
+        } catch(Exception e) {
+            throw new UsernameAlreadyExistsException("Username '" + newUser.getUsername() + "' already exists");
+        }
     }
 }
