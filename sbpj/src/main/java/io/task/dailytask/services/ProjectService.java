@@ -2,9 +2,11 @@ package io.task.dailytask.services;
 
 import io.task.dailytask.domain.Backlog;
 import io.task.dailytask.domain.Project;
+import io.task.dailytask.domain.User;
 import io.task.dailytask.exceptions.ProjectIdException;
 import io.task.dailytask.repositories.BacklogRepository;
 import io.task.dailytask.repositories.ProjectRepository;
+import io.task.dailytask.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,18 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOrUpdateProject(Project project) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public Project saveOrUpdateProject(Project project, String username) {
         String projectId = project.getProjectIdentifier().toUpperCase();
         try {
+            User user = userRepository.findByUsername(username);
+
+            project.setUser(user);
+
+            project.setProjectLeader(user.getUsername());
+
             project.setProjectIdentifier(projectId);
 
             if (project.getId() == null) {
@@ -49,8 +60,8 @@ public class ProjectService {
         return project;
     }
 
-    public Iterable<Project> findAllProjects() {
-        return projectRepository.findAll();
+    public Iterable<Project> findAllProjects(String username) {
+        return projectRepository.findAllByProjectLeader(username);
     }
 
     public void deleteProjectByIdentifier(String projectid) {
