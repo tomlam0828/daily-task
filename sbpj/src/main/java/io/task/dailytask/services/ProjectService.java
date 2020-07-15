@@ -4,6 +4,7 @@ import io.task.dailytask.domain.Backlog;
 import io.task.dailytask.domain.Project;
 import io.task.dailytask.domain.User;
 import io.task.dailytask.exceptions.ProjectIdException;
+import io.task.dailytask.exceptions.ProjectNotFoundException;
 import io.task.dailytask.repositories.BacklogRepository;
 import io.task.dailytask.repositories.ProjectRepository;
 import io.task.dailytask.repositories.UserRepository;
@@ -49,12 +50,16 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectId) {
+    public Project findProjectByIdentifier(String projectId, String username) {
 
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
 
         if (project == null) {
             throw new ProjectIdException("Project ID '" + projectId + "' does not exist");
+        }
+
+        if (!project.getProjectLeader().equals(username)) {
+            throw new ProjectNotFoundException("Project not found in your account");
         }
 
         return project;
@@ -64,13 +69,7 @@ public class ProjectService {
         return projectRepository.findAllByProjectLeader(username);
     }
 
-    public void deleteProjectByIdentifier(String projectid) {
-        Project project = projectRepository.findByProjectIdentifier(projectid);
-
-        if (project == null) {
-            throw new ProjectIdException("Cannot delete with ID: " + projectid + " . It doesn't exist");
-        }
-
-        projectRepository.delete(project);
+    public void deleteProjectByIdentifier(String projectid, String username) {
+        projectRepository.delete(findProjectByIdentifier(projectid, username));
     }
 }
