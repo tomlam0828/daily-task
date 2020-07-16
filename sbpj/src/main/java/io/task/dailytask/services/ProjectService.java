@@ -24,6 +24,20 @@ public class ProjectService {
 
     public Project saveOrUpdateProject(Project project, String username) {
         String projectId = project.getProjectIdentifier().toUpperCase();
+
+        // project.getid != null
+        // find by db id -> null
+
+        if (project.getId() != null) {
+            Project existingProject = projectRepository.findByProjectIdentifier(projectId);
+
+            if (existingProject != null && (!existingProject.getProjectLeader().equals(username))) {
+                throw new ProjectNotFoundException("Project not found in your account");
+            } else if (existingProject == null) {
+                throw new ProjectNotFoundException("Project with id: '" + projectId + "' cannot be updated because it doesn't exist");
+            }
+        }
+
         try {
             User user = userRepository.findByUsername(username);
 
