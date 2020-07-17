@@ -29,6 +29,13 @@ class Login extends Component {
             })
         }
     }
+
+    componentDidMount() {
+        if (this.props.security.validToken) {
+            this.props.history.push("/dashboard");
+        }
+    }
+
     onSubmit(e) {
         e.preventDefault();
         const LoginRequest = {
